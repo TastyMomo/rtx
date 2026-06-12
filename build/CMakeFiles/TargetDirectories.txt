@@ -1,0 +1,3 @@
+/home/momo/projects/rtx/build/CMakeFiles/raytracer.dir
+/home/momo/projects/rtx/build/CMakeFiles/edit_cache.dir
+/home/momo/projects/rtx/build/CMakeFiles/rebuild_cache.dir
