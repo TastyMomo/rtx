@@ -1,8 +1,6 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
-#include "ray.h"
-
 class hit_record {
     public:
         point3 p;   //Cordinates
@@ -22,7 +20,7 @@ class hittable {
 
         virtual ~hittable() = default;  //Cleans memory about hittable objects, prevents memory leak
 
-        virtual bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const = 0;    //Pure virtual function
+        virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const = 0;    //Pure virtual function
 };
 
 #endif
