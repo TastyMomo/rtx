@@ -1,10 +1,13 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
+class material;
+
 class hit_record {
     public:
         point3 p;   //Cordinates
         vec3 normal;    //Direction
+        shared_ptr<material> mat;
         double t;   //Distance
 
         //Checking if the surface is front-face
