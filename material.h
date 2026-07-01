@@ -2,7 +2,6 @@
 #define MATERIAL_H
 
 #include "hittable.h"
-#include "color.h"
 
 class material {
     public:
@@ -73,7 +72,7 @@ class dielectric : public material {
             bool cannot_refract = ri * sin_theta > 1.0;     //Angle less than critical
             vec3 direction;
 
-            if (cannot_refract)     //Total Internal Reflection
+            if (cannot_refract || reflectance(cos_theta, ri) > random_double())     //Total Internal Reflection
                 direction = reflect(unit_direction, rec.normal);
             else
                 direction = refract(unit_direction, rec.normal, ri);
@@ -91,6 +90,6 @@ class dielectric : public material {
             r0 = r0*r0;
             return r0 + (1-r0)*std::pow((1 - cosine),5);
         }
-
 };
+
 #endif

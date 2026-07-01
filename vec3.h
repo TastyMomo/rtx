@@ -67,11 +67,6 @@ class vec3{
 
 using point3 = vec3;
 
-//Printing Vectors
-inline std::ostream& operator<<(std::ostream& out, const vec3& v) {
-    return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
-}
-
 //Addition of vectors to get a third vector
 inline vec3 operator+(const vec3& u, const vec3& v) {
     return vec3(u.e[0]+v.e[0], u.e[1]+v.e[1], u.e[2]+v.e[2]);
@@ -81,8 +76,6 @@ inline vec3 operator+(const vec3& u, const vec3& v) {
 inline vec3 operator-(const vec3& u, const vec3& v) {
     return vec3(u.e[0]-v.e[0], u.e[1]-v.e[1], u.e[2]-v.e[2]);
 }
-
-//Multiplication of vectors to get a third vector
 
 //Vector*Vector
 inline vec3 operator*(const vec3& u, const vec3& v) {
@@ -136,7 +129,7 @@ inline vec3 random_unit_vector() {
     while (true) {
         auto p = vec3::random(-1,1);
         auto lensq = p.length_squared();
-        if (1e-160 < lensq && lensq <= 1)
+        if (1e-160 < lensq && lensq <= 1.0)
             return p / sqrt(lensq);
     }
 }

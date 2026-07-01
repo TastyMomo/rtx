@@ -5,10 +5,10 @@ class material;
 
 class hit_record {
     public:
-        point3 p;   //Cordinates
+        point3 p;       //Cordinates
         vec3 normal;    //Direction
         shared_ptr<material> mat;
-        double t;   //Distance
+        double t;       //Distance
 
         //Checking if the surface is front-face
         bool front_face;
