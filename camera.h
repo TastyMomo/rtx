@@ -3,6 +3,7 @@
 
 #include "hittable.h"
 #include "material.h"
+#include <vector>
 
 class camera {
   public:
@@ -22,23 +23,44 @@ class camera {
     void render(const hittable& world) {
         initialize();
 
-        //Render
-        std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+        //Buffer frame in RAM
+        std::vector<color> image_buffer(image_width * image_height);
 
+        int lines_completed = 0;
+
+        //Multi-threaded
+        #pragma omp parallel for shared(lines_completed)
         for (int j = 0; j < image_height; j++) {
-            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+            
             for (int i = 0; i < image_width; i++) {
-                //Shooting random rays
                 color pixel_color(0,0,0);
                 for (int sample = 0; sample < samples_per_pixel; sample++) {
                     ray r = get_ray(i, j);
                     pixel_color += ray_color(r, max_depth, world);
                 }
-                write_color(std::cout, pixel_samples_scale * pixel_color);
+                
+                //Storing data in buffer frame
+                image_buffer[j * image_width + i] = pixel_samples_scale * pixel_color;
+            }
+
+            //Progress bar
+            #pragma omp critical
+            {
+                lines_completed++;
+                std::clog << "\rScanlines remaining: " << (image_height - lines_completed) << "    " << std::flush;
             }
         }
 
-        std::clog << "\rDone    \n";
+        //File output
+        std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+        
+        for (int j = 0; j < image_height; j++) {
+            for (int i = 0; i < image_width; i++) {
+                write_color(std::cout, image_buffer[j * image_width + i]);
+            }
+        }
+
+        std::clog << "\rDone.                 \n";
     }
 
   private:
